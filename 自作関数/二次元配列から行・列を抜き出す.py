@@ -20,11 +20,11 @@ square = [[1,2,3],[4,5,6],[7,8,9]]
 print("二次元リストサンプル")
 for i in square:
     print(i)
-print()
-print("行と列のリスト")
+
+print("\n" + "行と列のリスト")
 for i in roco_check(square):
     print(i)
-print()
-print("斜めの並びのリスト")
+
+print("\n" + "斜めの並びのリスト")
 for i in x_check(square):
     print(i)
