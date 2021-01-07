@@ -5,9 +5,13 @@ def gcd(a,b):
         return a
     return gcd(b,a%b) 
 
+# 最大公約数を用いて最小公倍数も求めることができる
+def lcm(gcdnum,a,b):
+    return a*b // gcdnum
     
     
 a,b = 368,216
-a,b = int(a),int(b)
+gcdnum = gcd(a,b)
+lcmnum = lcm(gcdnum,a,b)
 
-print(gcd(a,b))
+print(gcdnum,lcmnum)
