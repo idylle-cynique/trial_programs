@@ -6,10 +6,10 @@ contests = ["abc","arc","agc"]
 
 url += domain + "contests/"
 
-print("コンテストの種類を入力してください： ")
-c = input()
+print("コンテストの種類を入力してください： ",end="")
+c_idx = int(input())-1
 
-print("何回目のコンテストの問題を閲覧しますか？： ")
+print("何回目のコンテストの問題を閲覧しますか？： ",end="")
 n = int(input())
 if 10 > n:
     n = "00" + str(n)
@@ -18,13 +18,12 @@ elif 100 > n:
 else:
     n = str(n)
 
-url += (c+n) + "tasks/"
+url += (contests[c_idx]+n) + "/tasks/"
 
-print("A～Fのどの問題を閲覧しますか？: ")    
-print("")
+print("A～Fのどの問題を閲覧しますか？: ",end="") 
 q_idx = int(input())
 q = ["all","a","b","c","d","e","f"]
 
-url += (c+n) + "_" + q[q_idx]
+url += (contests[c_idx]+n) + "_" + q[q_idx]
 
 webbrowser.open(url)
