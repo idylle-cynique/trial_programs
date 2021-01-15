@@ -13,6 +13,12 @@ def elatos(n):
             #print(shieve)
             #print(min(shieve-check_list))
       
-            x = min(shieve-check_list) # ここの処理が少々冗長なのか、10**6だと2000msを超えてしまう
+            x = min(shieve-check_list)
       
       return shieve
+
+n = 10**6
+ela_set = elatos(n)
+print(ela_set)
+
+n = int(input())
