@@ -3,9 +3,10 @@
 import random
 
 def bin_search(nums,n):
-      print(nums)
+      
       l,r = 0,len(nums)-1
       m = len(nums)//2
+      print(nums); print(n,":",nums[m])
       if len(nums) == 1 and nums[0] != n:
             return False
       
@@ -25,4 +26,8 @@ a =  sorted([770, 659, 765, 416, 901, 543, 655, 171, 981, 522, 677,
 idx = random.randint(0,n-1)
 
 print("Is there",a[idx],"in list-a?")
-print(bin_search(a,a[idx]))
+
+if bin_search(a,a[idx]) == True:
+      print("-- Yes, there is!")
+else:
+      print("-- Sorry,",a[idx],"doesn't exist in this list...")
