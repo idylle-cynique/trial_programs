@@ -1,12 +1,10 @@
 # 約数の高速列挙
-import math
-
-def chk_divisors(n):
+def check_divs(n):
     x = 1
     
     lower_divs = []
     greater_divs = []
-    while(x < int(math.sqrt(n))+1):
+    while(x*x <= n):
         if n%x == 0:
             lower_divs.append(x)
             if x**2 != n:     
