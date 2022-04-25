@@ -15,7 +15,7 @@ class Node:
         self.right = None
     
     def __repr__(self): # print()で中身が分かるようにしておく
-        return (f"LEFT: {self.left}, VALUE: {self.value}, RIGHT: {self.right}")
+        return (f"VALUE-{self.value}")
     
 
 class BST:
@@ -100,19 +100,21 @@ class BST:
 
         
 
-
-            
-        
-if __name__ == "__main__":
-    
+def main():
     Array = [5,1,3,2,0,10,7,8,6]
     flag = False
     bst = BST()
     
+    # ここの処理もBSTクラスの中に収めてしまいたい
     for element in Array:
         if not(flag):
             bst.set_root(element)
+            flag = True
         else:
             bst.insert(element)
+    print(bst.parent_node)
+    print(bst.take_max(),bst.take_min())
 
-
+        
+if __name__ == "__main__":
+    main()
