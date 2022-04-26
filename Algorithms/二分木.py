@@ -2,7 +2,7 @@
 データを二分木構造で格納するためのライブラリ
 現時点ではまだ一連の走査機能がないのでその辺りはこれから
 
-またあくまでもデータを二分木生成アルゴリズムを用いてデータ格納を行うだけなので
+ただ、あくまでもデータを二分木生成アルゴリズムを用いてデータ格納を行うだけなので
 格納するデータの挿入順によっては計算量が改善されない場合がある
     ex. [1,2,3,4,5,6,...]のような順で挿入する場合
 したがって、実際に活用するにあたってはこれを拡張して平衡二分探索木を作る必要がある
@@ -55,16 +55,77 @@ class BST:
         else: # == "right"
             pre_node.right = new_node
     
-    def delete(self, element)-> None:
-        '''未完成'''
-        # 二分木内のあるノードを削除、引数で示されたノードが存在しない場合は何もしない
-
+    def delete(self, element)-> bool:
         '''処理内容
             1) 子ノードを持たないノード:    そのまま削除
             2) 子ノードを1つだけ持つノード: 指定されたノードを削除して、子ノードの親情報を親ノードの親ノードに買える
-            3) 子ノードを2つ持つノード:     指定されたノードの右の子ノードを探索し最も値が小さいノードを指定されたノードの位置に据える
+            3) 子ノードを2つ持つノード:     指定されたノードの右部分木を探索し最も値が小さいノード(左端ノード)を対象のノードの位置に据える
         '''
-        return 
+
+        '''メモ
+            Pythonの場合、削除したノードが占有していたメモリ領域の解法はどうやってする？
+            対象のノードを代入した変数にdel処理をしたとして、それはメソッド内変数を削除しただけで代入元のノード自体は削除されていないのでは？
+        '''
+
+        def get_node(search_value):
+            # 対応するノードを探す
+            now_node = self.root
+            while(not(now_node.value == search_value) and (now_node.left or now_node.right)): 
+                if now_node.value < search_value:
+                    now_node = now_node.right
+                else: # search_value > now_node.value
+                    now_node = now_node.left
+            
+            # ノードが存在すればそのノードを、存在しなければNoneを返す
+            if now_node.value == search_value:
+                return now_node
+            else:
+                return None
+
+        def get_mostleft(start_node):
+            # ある部分木(根からでも可)における最左ノードを取り出す
+            now_node = start_node
+            while(now_node.left):
+                now_node = now_node.left
+            return now_node
+
+        wannadelete_node = get_node(element) # Python3.10ならセイウチ記法(:=)を使えば短く出来る模様
+        if not(wannadelete_node): # 対象のノードが存在しない場合はFalseを返して終了
+            return False
+
+        if wannadelete_node.left and wannadelete_node.right:  # 左右いずれにも子ノードを持つ場合
+            # 右の部分木から左端のノードを取り出しそれを削除対象のノードのある位置に据える
+            mostleft_node = get_mostleft(wannadelete_node.right)
+
+            leftchild = wannadelete_node.left                # 削除対象のノードの左子ノードを得る
+            rightchild = wannadelete_node.right              # 削除対象のノードの右子ノードを得る
+            parent_node = self.parent_node[wannadelete_node] # 削除対象のノードの親ノードを得る
+
+            # 削除対象のノードを右部分木最左ノードに挿げ替える
+            self.parent_node[mostleft_node] = parent_node
+            
+            # 挿げ替えたノードを削除対象のノードの子ノードと接続
+            self.parent_node[leftchild] = mostleft_node
+            self.parent_node[rightchild] = mostleft_node
+
+            # 削除対象のノードの情報を削除
+            del self.parent_node[wannadelete_node]
+            del wannadelete_node
+
+        elif wannadelete_node.left or wannadelete_node.right: # 子ノードを左右いずれか一方にのみ持つ場合
+            child_node = wannadelete_node.left if wannadelete_node.left else wannadelete_node.right # 子ノードの情報を得る
+            parent_node = self.parent_node[wannadelete_node] # 対象のノードの親ノード情報を得る
+
+            del self.parent_node[wannadelete_node] # 対象のノードの親ノード情報を辞書から削除
+            del wannadelete_node                   # 対象のノードを削除
+
+            self.parent_node[child_node] = parent_node # 残った子ノードと親ノードを接続
+        else: # 子ノードを持たない(葉ノード)場合
+            del self.parent_node[wannadelete_node] # 親ノード情報を削除
+            del wannadelete_node                   # 対象のインスタンス変数を削除
+        
+        return True # 削除処理完了の意味でTrueを返す
+
 
     def take_max(self):
         '''生成した二分木から最大値を取り出す'''
