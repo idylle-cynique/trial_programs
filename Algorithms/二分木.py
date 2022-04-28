@@ -1,4 +1,4 @@
-'''二分木
+'''二分探索木
 データを二分木構造で格納するためのライブラリ
 現時点ではまだ一連の走査機能がないのでその辺りはこれから
 
@@ -56,6 +56,7 @@ class BST:
             pre_node.right = new_node
     
     def delete(self, element)-> bool:
+        '''指定された値を持つノードを削除'''
         '''処理内容
             1) 子ノードを持たないノード:    そのまま削除
             2) 子ノードを1つだけ持つノード: 指定されたノードを削除して、子ノードの親情報を親ノードの親ノードに買える
@@ -102,7 +103,7 @@ class BST:
             parent_node = self.parent_node[wannadelete_node] # 削除対象のノードの親ノードを得る
 
             # 削除対象のノードを右部分木最左ノードに挿げ替える
-            self.parent_node[mostleft_node] = parent_node
+            self.parent_node[mostleft_node] = mostleft_node if self.parent_node[wannadelete_node] == wannadelete_node else parent_node
             
             # 挿げ替えたノードを削除対象のノードの子ノードと接続
             self.parent_node[leftchild] = mostleft_node
@@ -175,6 +176,9 @@ def main():
             bst.insert(element)
     print(bst.parent_node)
     print(bst.take_max(),bst.take_min())
+
+    bst.delete(5)
+    print("delete 5:", bst.parent_node)
 
         
 if __name__ == "__main__":
