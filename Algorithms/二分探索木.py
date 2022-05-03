@@ -173,7 +173,6 @@ class BST:
                     now_node = now_node.right
             else:
                 now_node = now_node.left
-
         return ret_list
 
     def get_inorder(self)-> list:
@@ -194,7 +193,6 @@ class BST:
                         ret_list.append(now_node.value)
                         checklist.add(now_node)
                     now_node = self.parent_node[now_node]
-
         return ret_list # ソートされた形で得ることができる
 
     def get_postorder(self)-> list:
@@ -212,14 +210,9 @@ class BST:
                     ret_list.append(now_node.value)
                     checklist.add(now_node)
                     now_node = self.parent_node[now_node]
-
-
         return ret_list 
 
 
-
-
-        
 
 def main():
     Array = [2,1,8,3,9,5,4,7,6]
